@@ -1,90 +1,86 @@
-from module.discount import *
+from module.DiscountModule import DiscountModule
 import json
 
+def search_item(name):
+    for item in stock:
+        if name.lower() == item['name'].lower():
+            return item
+        
+def search_campaign(name):
+    for item in campaign:
+        if name.lower() == item['name'].lower():
+            return item
+
 with open('src/stock.json') as f:
-    stock = json.load(f)
+    stock = json.load(f) 
 
-stock_name = []
-item_price = dict()
-item_catagory = dict()
+with open('src/campaign.json') as f:
+    campaign = json.load(f) 
 
-for item in stock:
-    name = item['name']
-    stock_name.append(name)
-    price = item['price']
-    category = item['category']
-    item_price[name] = price
-    item_catagory[name] = category
 
 while True:
-    cart = []
-    quantities = []
-    categories = []
-    Discount_price = 0
-    total_price = 0
-    while True:
-        item_name = input('Enter the product you want to buy (c to Confirm): ')   
-        if item_name in stock_name:
-            try:
-                item_quantities = int(input('Enter the quantities you want to buy : '))
-                if item_quantities >= 0:
-                    quantities.append(item_quantities)
-                    cart.append(item_name)
-                    categories.append(item_catagory[item_name])
-                else: print('Invalid')
+    discount_module = DiscountModule()
+    while True :
+        cart_input = input('Enter product (c to confirm) : ')
+        if search_item(cart_input) != None:
+            try :
+                quantity_input = int(input('Enter quantity : '))
+                if quantity_input > 0:
+                    discount_module.add_item_to_cart(search_item(cart_input))
+                    discount_module.add_quantity(quantity_input)
                 
-            except ValueError:
-                print("Please fill the number")
-                
-                
-        elif item_name == 'c':
+            except ValueError: print('Please fill the correct number.')
+        elif cart_input == 'c':
             break
-        else: print("Dosen't has this product in the stock.")
-                
-    while True:            
-        try:
-            coupon_input = int(input('1 : Fixed amount | 2 : Percentage discount | 3 : Skip : '))
-            if coupon_input == 1 or coupon_input == 2 or coupon_input == 3:
-                break
-            else: print("Doesn't has this campaign.")
-        except ValueError:
-            print("Doesn't has this campaign.")
-            
-    while True:        
-        try:
-            OnTop_input = int(input('1 : Percentage discount by category | 2 : Discount by point | 3 : Skip : '))
-            if OnTop_input == 1 or OnTop_input == 2 or OnTop_input == 3:
-                break
-            else: print("Doesn't has this campaign.")
-        except ValueError:
-            print("Doesn't has this campaign.")
-            
-    for item, quantity, category in zip(cart, quantities, categories):
-        total_price += (float(item_price[item]) * int(quantity))
-        if OnTop_input == 1:
-            Discount_price += Percentage_discount_category((float(item_price[item]) * int(quantity)), category, 15)
-        else :    
-            Discount_price += (float(item_price[item]) * int(quantity))
-            
-    #coupon    
-    if coupon_input == 1:
-        Discount_price = Fixed_discount(Discount_price, 50)
-    elif coupon_input == 2:
-        Discount_price = Percentage_discount(Discount_price, 15)
-    elif coupon_input == 3:
-        pass
+        else : print("this product doesn't exist in the stock.")
         
-    #on top
-    if OnTop_input == 2:
-        Discount_price = Discount_points(Discount_price, 68)
-    elif OnTop_input == 3:
-        pass
+    while True :
+        coupon_campaign_input = int(input('coupon campaign : 1 | Fixed amount || 2 | Percentage discount || 3 | Skip : '))
+        if coupon_campaign_input == 1 :
+            campaign_input = 'Fixed Amount'
+            discount_module.add_campaign(search_campaign(campaign_input))
+            break
+        elif coupon_campaign_input == 2 :
+            campaign_input = 'Percentage discount'
+            discount_module.add_campaign(search_campaign(campaign_input))
+            break
+        elif coupon_campaign_input == 3 :
+            break
         
-    #seasonal
-    Discount_price = Special_campaigns(Discount_price, 300, 40)
-
-    print('item : ', cart)
-    print('quantity : ', quantities)
-    print('Total price : ' ,str(total_price) + " Baht")    
-    print('Discount price : ' ,str(Discount_price) + " Baht")
+        else : print("Dosen't has this campaign.")
+        
+    while True :    
+        ontop_campaign_input = int(input('coupon campaign : 1 | Percentage Discount by Item Category || 2 | Discount by points || 3 | Skip : '))
+        if coupon_campaign_input == 1 :
+            campaign_input = 'Percentage Discount by Item Category'
+            discount_module.add_campaign(search_campaign(campaign_input))
+            break
+        elif coupon_campaign_input == 2 :
+            campaign_input = 'Discount by points'
+            discount_module.add_campaign(search_campaign(campaign_input))
+            break
+        elif coupon_campaign_input == 3 :
+            break
+        
+        else : print("Dosen't has this campaign.")
+        
+    while True :    
+        seasonal_campaign_input = int(input('coupon campaign : 1 | Special campaign || 2 | Skip : '))
+        if seasonal_campaign_input == 1 :
+            campaign_input = 'Special campaign'
+            discount_module.add_campaign(search_campaign(campaign_input))
+            break
+        elif seasonal_campaign_input == 2 :
+            break
+        
+        else : print("Dosen't has this campaign.")
+        
+    total_price = discount_module.apply_discounts()
+    print(total_price)
+            
+        
+        
     
+    
+        
+
