@@ -1,4 +1,4 @@
-def Fixed_discount(Amount, discount):
+def Fixed_discount(Amount : float , discount : float):
     return Amount - discount
 
 def Percentage_discount(Amount, percentage):
@@ -25,7 +25,10 @@ def Discount_points(Amount, customer_points):
 def Special_campaigns(Amount, every, discount):
     try:
         iter = int(Amount/every)
+        return Amount - (iter * discount)
     except:
-        iter = int(Amount/1)
-    
-    return Amount - (iter * discount)
+        iter = float(Amount/1)
+        print('inprocess')
+        print(iter)
+        print(iter * discount)
+        return Amount - iter

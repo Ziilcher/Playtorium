@@ -39,13 +39,12 @@ while True:
                 
         elif item_name == 'c':
             break
-            
         else: print("Dosen't has this product in the stock.")
                 
     while True:            
         try:
-            coupon_input = int(input('1 : Fixed amount | 2 : Percentage discount : '))
-            if coupon_input == 1 or coupon_input == 2 :
+            coupon_input = int(input('1 : Fixed amount | 2 : Percentage discount | 3 : Skip : '))
+            if coupon_input == 1 or coupon_input == 2 or coupon_input == 3:
                 break
             else: print("Doesn't has this campaign.")
         except ValueError:
@@ -53,8 +52,8 @@ while True:
             
     while True:        
         try:
-            OnTop_input = int(input('1 : Percentage discount by category | 2 : Discount by point : '))
-            if OnTop_input == 1 or OnTop_input == 2 :
+            OnTop_input = int(input('1 : Percentage discount by category | 2 : Discount by point | 3 : Skip : '))
+            if OnTop_input == 1 or OnTop_input == 2 or OnTop_input == 3:
                 break
             else: print("Doesn't has this campaign.")
         except ValueError:
@@ -72,11 +71,14 @@ while True:
         Discount_price = Fixed_discount(Discount_price, 50)
     elif coupon_input == 2:
         Discount_price = Percentage_discount(Discount_price, 15)
-    else : print("Doesn't has this campaign.")
+    elif coupon_input == 3:
+        pass
         
     #on top
     if OnTop_input == 2:
         Discount_price = Discount_points(Discount_price, 68)
+    elif OnTop_input == 3:
+        pass
         
     #seasonal
     Discount_price = Special_campaigns(Discount_price, 300, 40)
