@@ -15,6 +15,8 @@ class DiscountModule:
         
     def apply_discounts(self):
         total_price = 0
+        print(self.cart)
+        print(self.discount_campaigns)
         
         for item, quantity in zip(self.cart, self.quantities):
             item_price = item['price'] * quantity
@@ -26,8 +28,10 @@ class DiscountModule:
             elif campaign['name'] == 'Percentage discount' :
                 total_price -= float(total_price * (campaign['Percentage']/100))
             elif campaign['name'] == 'Percentage Discount by Item Category' :
-                category_items = [item for item in self.cart if item['category'] == campaign['category']]
-                category_price = sum((item['price'] for item in category_items))
+                category_price = 0
+                for item, quantity in zip(self.cart, self.quantities):
+                    if item['category'] == campaign['category']:
+                        category_price += item['price'] * quantity
                 total_price -= float(category_price * (campaign['Amount'] / 100))
             elif campaign['name'] == 'Discount by points':
                 max_dicount = total_price * 0.2
@@ -37,5 +41,5 @@ class DiscountModule:
                 total_price -= float((total_price // campaign['every_x_baht']) * campaign['discount'])
             elif campaign['name'] == 'skip' :
                 pass
-                
+        
         return max(0, total_price)
