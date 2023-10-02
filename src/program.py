@@ -7,15 +7,15 @@ def search_item(name):
             return item
         
 def search_campaign(name):
-    for item in campaign:
-        if name.lower() == item['name'].lower():
-            return item
+    for campaign in campaigns:
+        if name.lower() == campaign['name'].lower():
+            return campaign
 
 with open('src/stock.json') as f:
     stock = json.load(f) 
 
 with open('src/campaign.json') as f:
-    campaign = json.load(f) 
+    campaigns = json.load(f) 
 
 
 while True:
@@ -37,38 +37,38 @@ while True:
     while True :
         coupon_campaign_input = int(input('coupon campaign : 1 | Fixed amount || 2 | Percentage discount || 3 | Skip : '))
         if coupon_campaign_input == 1 :
-            campaign_input = 'Fixed Amount'
-            discount_module.add_campaign(search_campaign(campaign_input))
+            coupon_campaign = 'Fixed Amount'
+            discount_module.add_campaign(search_campaign(coupon_campaign))
             break
         elif coupon_campaign_input == 2 :
-            campaign_input = 'Percentage discount'
-            discount_module.add_campaign(search_campaign(campaign_input))
+            coupon_campaign = 'Percentage discount'
+            discount_module.add_campaign(search_campaign(coupon_campaign))
             break
         elif coupon_campaign_input == 3 :
             break
         
         else : print("Dosen't has this campaign.")
         
-    while True :    
+    while True :   
         ontop_campaign_input = int(input('coupon campaign : 1 | Percentage Discount by Item Category || 2 | Discount by points || 3 | Skip : '))
-        if coupon_campaign_input == 1 :
-            campaign_input = 'Percentage Discount by Item Category'
-            discount_module.add_campaign(search_campaign(campaign_input))
+        if ontop_campaign_input == 1 :
+            ontop_campaign = 'Percentage Discount by Item Category'
+            discount_module.add_campaign(search_campaign(ontop_campaign))
             break
-        elif coupon_campaign_input == 2 :
-            campaign_input = 'Discount by points'
-            discount_module.add_campaign(search_campaign(campaign_input))
+        elif ontop_campaign_input == 2 :
+            ontop_campaign = 'Discount by points'
+            discount_module.add_campaign(search_campaign(ontop_campaign))
             break
-        elif coupon_campaign_input == 3 :
+        elif ontop_campaign_input == 3 :
             break
         
         else : print("Dosen't has this campaign.")
         
-    while True :    
+    while True :   
         seasonal_campaign_input = int(input('coupon campaign : 1 | Special campaign || 2 | Skip : '))
         if seasonal_campaign_input == 1 :
-            campaign_input = 'Special campaign'
-            discount_module.add_campaign(search_campaign(campaign_input))
+            seasonal_campaign = 'Special campaign'
+            discount_module.add_campaign(search_campaign(seasonal_campaign))
             break
         elif seasonal_campaign_input == 2 :
             break
