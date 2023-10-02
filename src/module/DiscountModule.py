@@ -15,9 +15,7 @@ class DiscountModule:
         
     def apply_discounts(self):
         total_price = 0
-        print(self.cart)
-        print(self.discount_campaigns)
-        
+            
         for item, quantity in zip(self.cart, self.quantities):
             item_price = item['price'] * quantity
             total_price += item_price
@@ -42,4 +40,22 @@ class DiscountModule:
             elif campaign['name'] == 'skip' :
                 pass
         
+        
         return max(0, total_price)
+    
+    def showCart(self):
+        list_cart = []
+        for item in self.cart:
+            list_cart.append(item['name'])
+            
+        print('Cart item : ', list_cart)
+    
+    def showQuantity(self):
+        print('Quantity : ', self.quantities)
+        
+    def showCampaign(self):
+        list_campaign = []
+        for campaign in self.discount_campaigns:
+            list_campaign.append(campaign['name'])
+            
+        print('Discount campaigns : ', list_campaign)

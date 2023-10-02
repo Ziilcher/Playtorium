@@ -76,7 +76,10 @@ while True:
         else : print("Dosen't has this campaign.")
         
     total_price = discount_module.apply_discounts()
-    print(total_price)
+    discount_module.showCart()
+    discount_module.showCampaign()
+    discount_module.showQuantity()
+    print('total price : ', str(total_price) + ' Baht')
             
         
         
